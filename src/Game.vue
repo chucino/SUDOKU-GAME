@@ -183,7 +183,11 @@ function resumeGame() {
 }
 
 function exitGame() {
-  if (isGameOver.value || isSolved.value) return;
+  if (isGameOver.value || isSolved.value) {
+    confirmExit();
+    return;
+  }
+
   isExitConfirm.value = true;
 }
 
@@ -192,6 +196,8 @@ function confirmExit() {
   isMenu.value = true;
   isPause.value = false;
   isGameOver.value = false;
+  isSolved.value = false;
+  showRecords.value = false;
 }
 
 function cancelExit() {

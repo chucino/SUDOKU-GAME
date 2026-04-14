@@ -4,6 +4,11 @@ let footerDate: number = new Date().getFullYear();
 
 <template>
   <footer class="footer">
-    <p>© NCC – Source code on Chucino</p>
+    <p>
+      © NCC – Source code on
+      <a href="https://github.com/chucino/SUDOKU-GAME" target="_blank">
+        Chucino
+      </a>
+    </p>
   </footer>
 </template>

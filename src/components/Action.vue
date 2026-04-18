@@ -26,11 +26,11 @@ const label = actionMap[props.action] || "";
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* 👈 thêm cái này */
+  justify-content: center;
 
   width: 70px;
   cursor: pointer;
-  gap: 2px; /* 👈 thêm để kiểm soát khoảng cách */
+  gap: 2px;
 }
 
 .status__action :deep(svg) {

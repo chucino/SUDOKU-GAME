@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onUpdated } from "vue";
+import { ref, onUpdated, onMounted } from "vue";
 import { getUniqueSudoku } from "./sovler/UniqueSudoku";
 import {
   SudokuContent,
@@ -177,9 +177,20 @@ function startNewGame(level: any) {
   newGame();
 }
 
+// function resumeGame() {
+//   isMenu.value = false;
+//   showRecords.value = false;
+// }
+
 function resumeGame() {
-  isMenu.value = false;
-  showRecords.value = false;
+  const loaded = loadGame();
+
+  if (loaded) {
+    isMenu.value = false;
+    showRecords.value = false;
+  } else {
+    alert("No saved game found!");
+  }
 }
 
 function exitGame() {
@@ -192,6 +203,7 @@ function exitGame() {
 }
 
 function confirmExit() {
+  saveGame();
   isExitConfirm.value = false;
   isMenu.value = true;
   isPause.value = false;
@@ -223,6 +235,40 @@ function saveRecord(time: string) {
 function convertToSeconds(time: string) {
   const [h, m, s] = time.split(":").map(Number);
   return h * 3600 + m * 60 + s;
+}
+
+onMounted(() => {
+  window.addEventListener("beforeunload", () => {
+    saveGame();
+  });
+});
+
+function saveGame() {
+  const data = {
+    board: InitArray.value,
+    solved: temporarySolvedArray.value,
+    time: gameTime.value,
+    difficulty: difficulty.value,
+    mistakes: mistakes.value,
+  };
+
+  localStorage.setItem("sudoku_save", JSON.stringify(data));
+}
+
+function loadGame() {
+  const data = JSON.parse(localStorage.getItem("sudoku_save") || "null");
+
+  if (!data) return false;
+
+  temporarySolvedArray.value = data.solved;
+
+  InitArray.value = data.board;
+
+  gameTime.value = data.time;
+  difficulty.value = data.difficulty;
+  mistakes.value = data.mistakes;
+
+  return true;
 }
 </script>
 
